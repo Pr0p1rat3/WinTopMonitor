@@ -1,0 +1,54 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="WinTop Monitor"
+    Manufacturer="Internal Tools"
+    Version="0.1.0"
+    UpgradeCode="4CF5BFF7-8875-4F91-9150-279C4F95FBF5"
+    Scope="perMachine">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of WinTop Monitor is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="MainFeature" Title="WinTop Monitor" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <?if $(var.AddToPath)=1 ?>
+      <ComponentRef Id="PathComponent" />
+      <?endif ?>
+    </Feature>
+
+    <StandardDirectory Id="ProgramFilesFolder">
+      <Directory Id="INSTALLFOLDER" Name="WinTop Monitor" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="WinTop Monitor" />
+    </StandardDirectory>
+
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PublishDir)\**" />
+    </ComponentGroup>
+
+    <Component Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Guid="56BD4619-342D-49E2-B8CB-C6817DC297B1">
+      <Shortcut Id="ApplicationStartMenuShortcut"
+                Name="WinTop Monitor"
+                Description="Terminal-style Windows system monitor"
+                Target="[INSTALLFOLDER]WinTopMonitor.exe"
+                WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\WinTopMonitor" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <Component Id="PathComponent" Directory="INSTALLFOLDER" Guid="8F9D3AD4-921B-490B-AF4B-4F6E3480A1DA">
+      <Environment Id="AddToPath"
+                   Name="PATH"
+                   Value="[INSTALLFOLDER]"
+                   Permanent="no"
+                   Part="last"
+                   Action="set"
+                   System="yes" />
+      <RegistryValue Root="HKLM" Key="Software\WinTopMonitor" Name="path" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+  </Package>
+</Wix>
+

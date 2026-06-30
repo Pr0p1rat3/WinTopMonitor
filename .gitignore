@@ -1,0 +1,34 @@
+﻿# .NET build output
+bin/
+obj/
+artifacts/
+publish/
+TestResults/
+
+# Compiled files
+*.exe
+*.dll
+*.pdb
+*.msi
+*.zip
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Secrets / signing
+*.pfx
+*.key
+*.pem
+secrets.json
+appsettings.Development.json
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
