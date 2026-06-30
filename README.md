@@ -19,7 +19,7 @@ The application is transparent local monitoring software. It does not install a 
 - Structured local JSONL logs.
 - No external telemetry.
 
-# Buy me a cuban C0ff33 ^__^
+## Buy me a cuban C0ff33 ^__^
 
     BTC: bc1qtv8j0l887frldav7k8sdz8nz3n4y6shv7cvnx7
     ETH: 0x014603d2F6B2D17AECBa2Df7ac3eeAB667bf068d
