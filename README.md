@@ -21,20 +21,7 @@ The application is transparent local monitoring software. It does not install a 
 
 ## Screenshots
 
-Placeholder:
-
-```text
-+ System --------------------------------------------------------------+
-| WinTop Monitor  2026-06-30 10:15:00                                  |
-| HOST01 | alice | Microsoft Windows 11 | X64 | uptime 2d 4h 12m       |
-+---------------------------------------------------------------------+
-+ CPU ----------------------------+ + Memory -------------------------+
-| Overall [##########----------] 50% | Used 12.4 GB / 32 GB           |
-| Core 0  [######--------------] 30% | Available 19.6 GB              |
-+----------------------------------+ +--------------------------------+
-+ Disk ---------------------------+ + Network ------------------------+
-+ Processes -----------------------------------------------------------+
-```
+<img width="1891" height="609" alt="image" src="https://github.com/user-attachments/assets/5ea6ff8e-8fe7-47ca-a0f9-c122c12fa15a" />
 
 ## Requirements
 
