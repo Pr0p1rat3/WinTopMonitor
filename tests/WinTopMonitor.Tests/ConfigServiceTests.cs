@@ -1,3 +1,4 @@
+using Xunit;
 using Microsoft.Extensions.Logging.Abstractions;
 using WinTopMonitor.Config;
 using WinTopMonitor.Models;

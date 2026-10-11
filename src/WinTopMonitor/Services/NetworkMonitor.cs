@@ -13,6 +13,7 @@ public sealed class NetworkMonitor
     {
         var now = DateTimeOffset.UtcNow;
         var snapshots = new List<NetworkAdapterSnapshot>();
+        var currentAdapters = new HashSet<string>();
 
         foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
         {
@@ -53,6 +54,16 @@ public sealed class NetworkMonitor
                 stats.BytesReceived,
                 upload,
                 download));
+
+            currentAdapters.Add(key);
+        }
+
+        foreach (var key in _previous.Keys.ToList())
+        {
+            if (!currentAdapters.Contains(key))
+            {
+                _previous.Remove(key);
+            }
         }
 
         return snapshots;

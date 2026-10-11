@@ -37,37 +37,55 @@ public sealed class App
             var snapshot = await _snapshotService.CollectAsync(config, sortMode, cancellationToken);
             _renderer.Render(snapshot, config, sortMode, showHelp);
 
-            var key = ReadKeyIfAvailable();
-            if (key.HasValue)
-            {
-                switch (char.ToLowerInvariant(key.Value.KeyChar))
-                {
-                    case 'q':
-                        _logger.LogInformation("Quit requested");
-                        return;
-                    case 'r':
-                        continue;
-                    case 'c':
-                        sortMode = ProcessSortMode.Cpu;
-                        break;
-                    case 'm':
-                        sortMode = ProcessSortMode.Memory;
-                        break;
-                    case 'n':
-                        sortMode = ProcessSortMode.Name;
-                        break;
-                    case 'h':
-                        showHelp = !showHelp;
-                        break;
-                }
-            }
-
             var elapsed = DateTimeOffset.UtcNow - started;
             var delay = TimeSpan.FromSeconds(Math.Max(0.2, config.RefreshIntervalSeconds)) - elapsed;
-            if (delay > TimeSpan.Zero)
+
+            var waitStart = DateTimeOffset.UtcNow;
+            var forceRefresh = false;
+
+            do
             {
-                await Task.Delay(delay, cancellationToken);
+                var key = ReadKeyIfAvailable();
+                if (key.HasValue)
+                {
+                    switch (char.ToLowerInvariant(key.Value.KeyChar))
+                    {
+                        case 'q':
+                            _logger.LogInformation("Quit requested");
+                            return;
+                        case 'r':
+                            forceRefresh = true;
+                            break;
+                        case 'c':
+                            sortMode = ProcessSortMode.Cpu;
+                            forceRefresh = true;
+                            break;
+                        case 'm':
+                            sortMode = ProcessSortMode.Memory;
+                            forceRefresh = true;
+                            break;
+                        case 'n':
+                            sortMode = ProcessSortMode.Name;
+                            forceRefresh = true;
+                            break;
+                        case 'h':
+                            showHelp = !showHelp;
+                            forceRefresh = true;
+                            break;
+                    }
+                }
+
+                if (forceRefresh)
+                {
+                    break;
+                }
+
+                if (delay > TimeSpan.Zero)
+                {
+                    await Task.Delay(Math.Min(50, (int)delay.TotalMilliseconds), cancellationToken);
+                }
             }
+            while (!cancellationToken.IsCancellationRequested && (DateTimeOffset.UtcNow - waitStart) < delay);
         }
     }
 

@@ -1,3 +1,4 @@
+using Xunit;
 using WinTopMonitor.Config;
 using WinTopMonitor.Models;
 using WinTopMonitor.Utils;

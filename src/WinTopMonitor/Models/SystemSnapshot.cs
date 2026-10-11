@@ -27,7 +27,11 @@ public sealed record MemorySnapshot(
     ulong TotalBytes,
     ulong UsedBytes,
     ulong AvailableBytes,
-    double UsagePercent);
+    double UsagePercent,
+    ulong TotalPageFileBytes,
+    ulong UsedPageFileBytes,
+    ulong AvailablePageFileBytes,
+    double PageFileUsagePercent);
 
 public sealed record DiskSnapshot(
     string Name,
