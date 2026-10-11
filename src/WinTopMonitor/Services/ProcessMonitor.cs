@@ -11,11 +11,13 @@ public sealed class ProcessMonitor
     {
         var now = DateTimeOffset.UtcNow;
         var processes = new List<ProcessSnapshot>();
+        var currentProcessIds = new HashSet<int>();
 
         foreach (var process in Process.GetProcesses())
         {
             using (process)
             {
+                currentProcessIds.Add(process.Id);
                 try
                 {
                     var cpuTime = process.TotalProcessorTime;
@@ -45,6 +47,14 @@ public sealed class ProcessMonitor
             .ThenBy(process => process.Name)
             .Take(count)
             .ToArray();
+
+        foreach (var key in _previousCpu.Keys.ToList())
+        {
+            if (!currentProcessIds.Contains(key))
+            {
+                _previousCpu.Remove(key);
+            }
+        }
 
         return (ApplySort(processes, sortMode).Take(count).ToArray(), topMemory.Length > 0 ? topMemory : topCpu);
     }

@@ -10,12 +10,18 @@ public sealed class MemoryMonitor
         var status = new MemoryStatusEx();
         if (!GlobalMemoryStatusEx(status))
         {
-            return new MemorySnapshot(0, 0, 0, 0);
+            return new MemorySnapshot(0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         var used = status.TotalPhys - status.AvailPhys;
         var percent = status.TotalPhys == 0 ? 0 : used * 100.0 / status.TotalPhys;
-        return new MemorySnapshot(status.TotalPhys, used, status.AvailPhys, percent);
+
+        var usedPageFile = status.TotalPageFile - status.AvailPageFile;
+        var percentPageFile = status.TotalPageFile == 0 ? 0 : usedPageFile * 100.0 / status.TotalPageFile;
+
+        return new MemorySnapshot(
+            status.TotalPhys, used, status.AvailPhys, percent,
+            status.TotalPageFile, usedPageFile, status.AvailPageFile, percentPageFile);
     }
 
     [DllImport("kernel32.dll", SetLastError = true)]

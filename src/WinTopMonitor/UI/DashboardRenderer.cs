@@ -60,9 +60,13 @@ public sealed class DashboardRenderer
         var table = new Table().NoBorder();
         table.AddColumn("Metric");
         table.AddColumn("Value");
-        table.AddRow("Used", $"{Formatters.Bytes(memory.UsedBytes)} / {Formatters.Bytes(memory.TotalBytes)}");
-        table.AddRow("Available", Formatters.Bytes(memory.AvailableBytes));
-        table.AddRow("Usage", Usage(memory.UsagePercent, config.Thresholds.Memory));
+        table.AddRow("Used RAM", $"{Formatters.Bytes(memory.UsedBytes)} / {Formatters.Bytes(memory.TotalBytes)}");
+        table.AddRow("Avail RAM", Formatters.Bytes(memory.AvailableBytes));
+        table.AddRow("RAM Usage", Usage(memory.UsagePercent, config.Thresholds.Memory));
+        table.AddEmptyRow();
+        table.AddRow("Used Swap", $"{Formatters.Bytes(memory.UsedPageFileBytes)} / {Formatters.Bytes(memory.TotalPageFileBytes)}");
+        table.AddRow("Avail Swap", Formatters.Bytes(memory.AvailablePageFileBytes));
+        table.AddRow("Swap Usage", Usage(memory.PageFileUsagePercent, config.Thresholds.Memory));
         return new Panel(table).Border(BoxBorder.Rounded).Header("Memory");
     }
 
@@ -164,6 +168,6 @@ public sealed class DashboardRenderer
     {
         const int width = 20;
         var filled = (int)Math.Round(Math.Clamp(percent, 0, 100) / 100 * width);
-        return "|" + new string('#', filled) + new string('-', width - filled) + "|";
+        return "|" + new string('█', filled) + new string('░', width - filled) + "|";
     }
 }

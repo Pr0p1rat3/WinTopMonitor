@@ -6,7 +6,6 @@ public sealed class FileLoggerProvider : ILoggerProvider
 {
     private readonly string _logFile;
     private readonly object _lock = new();
-    private bool _disposed;
 
     public FileLoggerProvider(string logDirectory)
     {
@@ -18,7 +17,6 @@ public sealed class FileLoggerProvider : ILoggerProvider
 
     public void Dispose()
     {
-        _disposed = true;
     }
 
     private sealed class FileLogger : ILogger
